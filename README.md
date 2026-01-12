@@ -2,134 +2,59 @@
 
 [![BRAPH 2](https://img.shields.io/badge/Bluesky-BRAPH%202-blue?style=social&logo=bluesky&url=https%3A%2F%2Fbraph2software.bsky.social)](https://braph2software.bsky.social)
 [![BRAPH 2](https://img.shields.io/twitter/url?label=BRAPH%202&style=social&url=https%3A%2F%2Ftwitter.com%2Fbraph2software)](https://twitter.com/braph2software)
-[![cite us](https://img.shields.io/badge/DOI-10.1371%2Fjournal.pone.0178798-blue)](https://doi.org/10.1371/journal.pone.0178798)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/yu-wei-c/DiSTAP)](https://github.com/yu-wei-c/DiSTAP/releases)
-[![arXiv](https://img.shields.io/badge/arXiv-2507.15772-b31b1b.svg)](https://arxiv.org/abs/2507.15772)
+[![cite us](https://img.shields.io/badge/DOI-10.1101%2F2025.10.07.680053-blue)](https://doi.org/10.1101/2025.10.07.680053)
 
-# BRAPH 2 DiSTAP
+# BRAPH 2 DeepBone
 
-The **BRAPH 2 DiSTAP** distribution provides a variational autoencoder (VAE)–based pipeline, DIVA, for analysing **Raman spectra in plant–stress experiments**. DIVA is a fully automated technique that uses a variational autoencoder to process native Raman spectra, including fluorescence background, to identify and quantify significant Raman peaks. This distribution supports the analyses presented in the following manuscript and enables users to apply the same workflow to their own datasets, via both command-line scripts and a ready-to-use graphical user interface:
+**BRAPH 2 DeepBone** provides a *variational autoencoder (VAE)* pipeline for **unsupervised decoding of 3D bone-marrow microenvironments** from deep imaging data.
 
-> Patil et al., *Raman spectra for plant-stress analysis using deep-learning* (preprint).  
-> [arXiv:2507.15772](https://arxiv.org/abs/2507.15772)
+This repository focuses on the **analysis side only**: the VAE-based “niche decoding” workflow.
 
-This distribution reuses the core analytical infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main [BRAPH 2](https://github.com/braph-software/BRAPH-2/tree/develop) repository and its [tutorials](https://github.com/braph-software/BRAPH-2/tree/develop/tutorials).
+The pipeline implements the deep-learning approach introduced in:
+
+> Chu et al., *Quantitative Multicolored Deep Imaging of Human Bones Reveals a Composite Osteo-Sinusoidal Niche for Mesenchymal Stromal Cells* (bioRxiv, 2025).  
+> DOI: https://doi.org/10.1101/2025.10.07.680053 
+
+This distribution reuses the core infrastructure of the standard BRAPH 2 distribution. For a general introduction to BRAPH 2, please refer to the main BRAPH 2 repository and its tutorials.
+
+## What the pipeline does
+
+From multichannel 3D images, the method converts local neighbourhoods around **CXCL12+ stromal cells** into **radial distribution functions** that quantify proximity to key structures (bone, sinusoids, other CXCL12+ cells) within **0–200 μm** (10 μm increments), giving **63 values per cell**. These vectors are embedded into a **2D latent space** using a VAE, enabling unsupervised grouping of cells by microenvironment and “decoding” of representative niche patterns (e.g., an osteo-sinusoidal niche enriched in both bone and sinusoids, prominent in young samples).
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/2ca15c29-f7f0-4e2d-9bba-333d3baccccb"
-       alt="Light stress figure"
+  <img src="https://github.com/user-attachments/assets/3935b157-8e7c-4e4f-8ca3-da31769814c8"
+       alt="DeepBone niche decoding figure"
        width="100%">
 </p>
 
-> 
-> **Light-stress study (Figure 2 in Patil et al.)**  This figure shows the latent 2D VAE embeddings (z1, z2) and the corresponding peak-area summaries for the *Arabidopsis*, *Choy Sum*, and *Kai Lan* datasets under four light conditions (high light, white light, low light, and shade). All panels in this figure can be reproduced directly with the DiSTAP distribution using the DIVA pipeline with **Light stress** data. The script is `braph2distap/pipelines/VariationalAutoencoderRamanSpectra/example_LightStress.m` and generated outputs are located in `braph2distap/pipelines/VariationalAutoencoderRamanSpectra/study_LightStress/results`.
+> **Niche decoding via VAE (Figure 7 in Chu et al.)**  
+> A schematic of: (i) constructing per-cell radial functions; (ii) encoding into a 2D latent space; and (iii) decoding selected regions to interpret microenvironments (young vs aged; regions R3/R4/R5). 
 
-## DiSTAP studies and folder structure
+## Folder structure
 
-Within this repository, the DIVA pipeline for Raman spectra is organised under:
+The DeepBone analysis pipeline is organised under:
 
-- `braph2distap/pipelines/VariationalAutoencoderRamanSpectra/`
+- `braph2deepbone/pipelines/VariationalAutoencoder/`
 
-This folder contains four study-specific example scripts and their corresponding analysis subfolders, matching the datasets analysed in the manuscript:
+## Model details (as in the paper)
 
-1. **Light stress study**  
-   - Study folder: `study_LightStress` 
-   - Example script: `example_LightStress.m`
-   - Data folder: `study_LightStress/data`
-   - Used to generate the panels in Figure 2 of the manuscript.
+The VAE used in the paper is a compact fully-connected architecture:
 
-2. **Shade avoidance stress study**  
-   - Study folder: `study_ShadeAvoidanceStress`  
-   - Example script: `example_ShadeAvoidanceStress.m`  
-   - Data folder: `study_ShadeAvoidanceStress/data`
-   - Used to generate the panels in Figure 3 of the manuscript.
-
-3. **High temperature stress study**  
-   - Study folder: `study_HighTemperatureStress` 
-   - Example script: `example_HighTemperatureStress.m`   
-   - Data folder: `study_HighTemperatureStress/data`
-   - Used to generate the panels in Figure 4 of the manuscript.
-
-4. **Bacterial stress study**  
-   - Study folder: `study_BacterialStress`  
-   - Example script: `example_BacterialStress_AB.m` and `example_BacterialStress_CS.m` 
-   - Data folder: `study_HighTemperatureStress/data_AB` and `study_HighTemperatureStress/data_CS`
-   - Used to generate the panels in Figure 5 of the manuscript.
-
-Each study folder contains:
-
-- The original Raman spectra data (in the respective data folders) used in the corresponding plant-stress experiment.  
-- Panels generated using the same algorithms and settings as in the manuscript. The exact manuscript figures and trained VAE model are provided in the corresponding `results` folder. The example script, using the provided Raman dataset, can reproduce the key patterns and show that the results are robust and consistent despite the minor stochastic variability inherent to the VAE.
+- **Input:** 63 features (3 functions × 21 radius points) 
+- **Encoder:** 63 → 16 → LeakyReLU(0.2) → 4 → 2D latent
+- **Decoder:** mirrors the encoder back to 63 outputs
+- **Training objective:** ELBO = reconstruction loss (MSE) + KL divergence(sediment://file_00000000738c722fbfab02dd7c9d7b24)  
 
 ## Software requirements
 
-To run **BRAPH 2 DiSTAP**, you need:
+To run **BRAPH 2 DeepBone**, you need:
 
 ### MATLAB
-
-- MATLAB (R2022a or later is recommended).
-- The following toolboxes:
+- MATLAB (R2022a or later recommended)
+- Toolboxes:
   - **Statistics and Machine Learning Toolbox**
   - **Deep Learning Toolbox**
-  - **Parallel Computing Toolbox**
-
-### Docker (for R-based figure generation)
-
-Some figures (e.g. colour palettes and latent-space quantile plots) are produced by R scripts that are executed inside a Docker container. For this functionality you need:
-
-- **Docker Desktop** (or an equivalent Docker installation)  
-  Installation instructions: <https://docs.docker.com/get-started/>
-
-After installation, you should verify that `docker` is available **both** in your system terminal and within MATLAB:
-
-In a **terminal** (macOS/Linux/Windows PowerShell):
-
-```
-docker --version
-```
-Then in the MATLAB Command Window:
-```
-[st,out] = system('docker --version');
-disp(out)
-```
-You should see something like:
-```Docker version 28.x.x, build <hash>```
-and st should be 0.
-
-If Docker works in your terminal but not in MATLAB, you may need to extend MATLAB’s PATH, for example on macOS:
-```
-% Example: if "which docker" in Terminal returns /usr/local/bin/docker
-setenv('PATH', [getenv('PATH') ':/usr/local/bin']);
-```
-(adjust the directory according to the output of which docker on your system).
-
-## Getting started: running BRAPH 2 DiSTAP
-
-Once the repository is downloaded or cloned, you can run the DiSTAP distribution directly from MATLAB.
-1. Launch the DiSTAP distribution
-```
-cd braph2distap
-braph2distap
-```
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/730ab836-775c-41da-8610-26be9d5d8a14"
-       alt="landing gui figure"
-       width="100%">
-</p>
-
-> 
-> **Landing GUI** This figure shows the landing graphical user interface (GUI) after running ``braph2distap``. The landing GUI provides four ready-to-use pipelines for processing and analysing Raman spectra. In particular, the fourth pipeline—**DiSTAP DIVA Pipeline Raman Spectra Variational Autoencoder with Multilayer Perceptron**—is the same DIVA pipeline used for all four studies in the accompanying manuscript (Patil et al.). After opening the pipeline, users can walk through the full workflow step by step.
-> 
-
-2. Run the example scripts
-To reproduce the analyses and figures using the same data and algorithm from the manuscript, run any of the example scripts:
-```
-example_LightStress           % Light-stress study
-example_ShadeAvoidanceStress  % Shade-avoidance study
-example_HighTemperatureStress % High-temperature study
-example_BacterialStress_AB    % Bacterial-stress study (Arabidopsis)
-example_BacterialStress_CS    % Bacterial-stress study (Choy Sum)
-```
+  - **Parallel Computing Toolbox** (optional, but useful)
 
 ## Software compilation
 
@@ -147,9 +72,8 @@ Before recompiling, remove the existing braph2distap folder and take it off the 
 
 If you use BRAPH 2 DiSTAP in your work, please cite:
 
-> Patil et al., *Raman spectra for plant-stress analysis using deep-learning* (preprint).  
-> [arXiv:2507.15772](https://arxiv.org/abs/2507.15772)
+> Chu et al., *Quantitative Multicolored Deep Imaging of Human Bones Reveals a Composite Osteo-Sinusoidal Niche for Mesenchymal Stromal Cells* (bioRxiv, 2025).  
+> DOI: https://doi.org/10.1101/2025.10.07.680053 
 
 > Chang et al., *BRAPH 2: a flexible, open-source, reproducible, community-oriented, easy-to-use framework for network analyses in neurosciences* (preprint).
 > [biorXiv:10.1101/2025.04.11.648455](https://doi.org/10.1101/2025.04.11.648455)
-
