@@ -43,7 +43,7 @@ The VAE used in the paper is a compact fully-connected architecture:
 - **Input:** 63 features (3 functions × 21 radius points) 
 - **Encoder:** 63 → 16 → LeakyReLU(0.2) → 4 → 2D latent
 - **Decoder:** mirrors the encoder back to 63 outputs
-- **Training objective:** ELBO = reconstruction loss (MSE) + KL divergence(sediment://file_00000000738c722fbfab02dd7c9d7b24)  
+- **Training objective:** ELBO = reconstruction loss (MSE) + KL divergence
 
 ## Software requirements
 
