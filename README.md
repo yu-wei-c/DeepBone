@@ -58,15 +58,15 @@ To run **BRAPH 2 DeepBone**, you need:
 
 ## Software compilation
 
-The compiled version of this distribution is already included in this repository under the braph2distap folder. However, if you extend the pipelines (for example, by adding new studies or altering the VAE architecture) you may wish to recompile.
-You can recompile DiSTAP using the BRAPH 2 Genesis mechanism. In MATLAB:
+The compiled version of this distribution is already included in this repository under the braph2deepbone folder. However, if you extend the pipelines (for example, by adding new studies or altering the VAE architecture) you may wish to recompile.
+You can recompile DeepBone using the BRAPH 2 Genesis mechanism. In MATLAB:
 ```
 % Example – adapt the configuration filename to your setup
-braph2genesis('braph2distap_config.m');
+braph2genesis('braph2Deepbone_config.m');
 ```
-This will re-generate the braph2distap folder with the updated elements and GUIs.
+This will re-generate the braph2deepbone folder with the updated elements and GUIs.
 Warning:
-Before recompiling, remove the existing braph2distap folder and take it off the MATLAB path to avoid conflicts. The folder will be recreated after a successful compilation.
+Before recompiling, remove the existing braph2deepbone folder and take it off the MATLAB path to avoid conflicts. The folder will be recreated after a successful compilation.
 
 ## Citing
 
