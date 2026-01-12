@@ -1,9 +1,7 @@
-distribution_name = 'DiSTAP';
-distribution_moniker = 'distap';
+distribution_name = 'DeepBone';
+distribution_moniker = 'deepbone';
 pipeline_folders = {
-    'RamanSpectra'
     'VariationalAutoencoder'
-    'VariationalAutoencoderRamanSpectra'
     };
 braph2_version = 'heads/develop';
 
